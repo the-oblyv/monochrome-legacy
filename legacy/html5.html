@@ -20,6 +20,8 @@ body {
   margin-left: 180px;
   padding: 20px;
   transition: margin-left 0.2s ease;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 #sidebar.collapsed ~ #main {
@@ -39,66 +41,107 @@ body {
 .subtitle {
   font-size: 20px;
   color: #ccc;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .player-box {
-  max-width: 850px;
-  margin: 25px auto;
+  max-width: 700px;
+  margin: 0 auto 25px auto;
   background: #1c1c1c;
-  border-radius: 16px;
-  padding: 16px;
+  border-radius: 18px;
+  padding: 20px;
 }
 
 .now-playing {
-  font-size: 14px;
-  color: #aaa;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  font-size: 15px;
+  color: #ccc;
 }
 
 audio {
   width: 100%;
+  height: 48px;
 }
 
-.search-bar {
-  width: 100%;
-  max-width: 850px;
-  margin: 0 auto 25px auto;
+.search-box {
+  max-width: 700px;
+  margin: 0 auto 30px auto;
+  background: #1c1c1c;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #1c1c1c;
-  padding: 12px 14px;
-  border-radius: 12px;
-  transition: 0.2s;
+  padding: 12px 16px;
 }
 
-.search-bar:focus-within {
-  background: #222;
-  transform: scale(1.01);
-}
-
-.search-bar i {
+.search-box i {
   color: #888;
 }
 
-.search-bar input {
-  width: 100%;
+.search-box input {
+  flex: 1;
   background: transparent;
   border: none;
   outline: none;
   color: #fff;
+  font-size: 15px;
 }
 
 #main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   max-width: 1000px;
   margin: 0 auto;
 }
 
-.empty {
-  text-align: center;
-  color: #888;
-  padding: 40px;
+.track-row {
+  background: #1c1c1c;
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  transition: 0.2s;
+  flex-wrap: wrap;
+}
+
+.track-row:hover {
+  background: #222;
+  transform: scale(1.01);
+}
+
+.track-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.track-cover {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.track-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.track-artist {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.music-btn {
+  background: #967BB6;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -109,23 +152,24 @@ audio {
 
 <div id="main">
 
-  <div class="hero">
-    <h1>Music</h1>
+<div class="player-box">
+  <div class="now-playing" id="now-playing-info">
+    Status: Ready to play.
   </div>
 
-  <div class="player-box">
-    <div class="now-playing" id="now-playing-info">Status: Ready</div>
-    <audio id="audio-player" controls></audio>
-  </div>
+  <audio id="audio-player" controls preload="none"></audio>
+</div>
 
-  <div class="search-bar">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <input id="searchInput" placeholder="Search music...">
-  </div>
+<form id="search-form" class="search-box">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="text" id="search-input" placeholder="Search music...">
+</form>
 
-  <div id="main-content">
-    <div class="empty">Loading...</div>
+<div id="main-content">
+  <div style="text-align:center;color:#888;padding:40px;">
+    Loading music...
   </div>
+</div>
 
 </div>
 
@@ -135,23 +179,9 @@ audio {
 <script src="script.js"></script>
 
 <script>
-const searchInput = document.getElementById("searchInput");
-
-function runSearch(q){
-  if(!q.trim()){
-    loadRecentTracks();
-    return;
-  }
-  performSearch(q);
-}
-
-searchInput.addEventListener("input", (e) => {
-  runSearch(e.target.value);
-});
-
-searchInput.addEventListener("keydown", (e) => {
+document.getElementById("search-input").addEventListener("keydown", function(e){
   if(e.key === "Enter"){
-    runSearch(searchInput.value);
+    document.getElementById("search-form").dispatchEvent(new Event("submit"));
   }
 });
 </script>
