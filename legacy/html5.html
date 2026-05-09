@@ -28,38 +28,26 @@ body {
 
 .hero {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 .hero h1 {
   font-size: 48px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .subtitle {
-  font-size: 24px;
-  margin-bottom: 30px;
+  font-size: 20px;
   color: #ccc;
-}
-
-.logo {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 20px;
   margin-bottom: 20px;
 }
 
-.v2 {
-  color: #967BB6;
-}
-
 .player-box {
-  max-width: 800px;
-  margin: 30px auto 20px auto;
+  max-width: 850px;
+  margin: 25px auto;
   background: #1c1c1c;
   border-radius: 16px;
-  padding: 18px;
+  padding: 16px;
 }
 
 .now-playing {
@@ -72,23 +60,22 @@ audio {
   width: 100%;
 }
 
-/* SEARCH BAR (from games page style) */
 .search-bar {
   width: 100%;
-  max-width: 420px;
-  margin: 0 auto 40px auto;
+  max-width: 850px;
+  margin: 0 auto 25px auto;
   display: flex;
   align-items: center;
-  background: #1c1c1c;
-  border-radius: 12px;
-  padding: 10px 15px;
   gap: 10px;
+  background: #1c1c1c;
+  padding: 12px 14px;
+  border-radius: 12px;
   transition: 0.2s;
 }
 
 .search-bar:focus-within {
   background: #222;
-  transform: scale(1.02);
+  transform: scale(1.01);
 }
 
 .search-bar i {
@@ -101,77 +88,11 @@ audio {
   border: none;
   outline: none;
   color: #fff;
-  font-size: 14px;
 }
 
 #main-content {
   max-width: 1000px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.track-row {
-  background: #1c1c1c;
-  border-radius: 16px;
-  padding: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  transition: 0.2s;
-  flex-wrap: wrap;
-}
-
-.track-row:hover {
-  background: #222;
-  transform: scale(1.01);
-}
-
-.track-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-width: 0;
-}
-
-.track-cover {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  object-fit: cover;
-  background: #000;
-}
-
-.track-info {
-  min-width: 0;
-}
-
-.track-title {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 3px;
-}
-
-.track-artist {
-  font-size: 13px;
-  color: #aaa;
-}
-
-.music-btn {
-  background: #967BB6;
-  border: none;
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.music-btn:hover {
-  background: #a88bc9;
-  transform: scale(1.05);
 }
 
 .empty {
@@ -188,13 +109,13 @@ audio {
 
 <div id="main">
 
-  <main class="hero">
+  <div class="hero">
     <h1>Music</h1>
-  </main>
+  </div>
 
   <div class="player-box">
-    <div class="now-playing" id="now-playing-info">Status: Ready to play.</div>
-    <audio id="audio-player" controls preload="none"></audio>
+    <div class="now-playing" id="now-playing-info">Status: Ready</div>
+    <audio id="audio-player" controls></audio>
   </div>
 
   <div class="search-bar">
@@ -203,7 +124,7 @@ audio {
   </div>
 
   <div id="main-content">
-    <div class="empty">Loading music...</div>
+    <div class="empty">Loading...</div>
   </div>
 
 </div>
@@ -214,14 +135,25 @@ audio {
 <script src="script.js"></script>
 
 <script>
-const input = document.getElementById("searchInput");
+const searchInput = document.getElementById("searchInput");
 
-if (input) {
-  input.addEventListener("input", () => {
-    const event = new Event("music-search");
-    document.dispatchEvent(event);
-  });
+function runSearch(q){
+  if(!q.trim()){
+    loadRecentTracks();
+    return;
+  }
+  performSearch(q);
 }
+
+searchInput.addEventListener("input", (e) => {
+  runSearch(e.target.value);
+});
+
+searchInput.addEventListener("keydown", (e) => {
+  if(e.key === "Enter"){
+    runSearch(searchInput.value);
+  }
+});
 </script>
 
 </body>
