@@ -72,34 +72,36 @@ audio {
   width: 100%;
 }
 
-.search-box {
-  max-width: 800px;
-  margin: 0 auto 30px auto;
-  background: #1c1c1c;
-  border-radius: 14px;
+/* SEARCH BAR (from games page style) */
+.search-bar {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto 40px auto;
   display: flex;
   align-items: center;
+  background: #1c1c1c;
+  border-radius: 12px;
+  padding: 10px 15px;
   gap: 10px;
-  padding: 12px 16px;
   transition: 0.2s;
 }
 
-.search-box:focus-within {
+.search-bar:focus-within {
   background: #222;
-  transform: scale(1.01);
+  transform: scale(1.02);
 }
 
-.search-box i {
+.search-bar i {
   color: #888;
 }
 
-.search-box input {
-  flex: 1;
+.search-bar input {
+  width: 100%;
   background: transparent;
   border: none;
   outline: none;
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 #main-content {
@@ -195,9 +197,9 @@ audio {
     <audio id="audio-player" controls preload="none"></audio>
   </div>
 
-  <div class="search-box">
+  <div class="search-bar">
     <i class="fa-solid fa-magnifying-glass"></i>
-    <input id="search-input" placeholder="Search music...">
+    <input id="searchInput" placeholder="Search music...">
   </div>
 
   <div id="main-content">
@@ -210,6 +212,17 @@ audio {
 <script src="html5.js"></script>
 <script src="frame.js"></script>
 <script src="script.js"></script>
+
+<script>
+const input = document.getElementById("searchInput");
+
+if (input) {
+  input.addEventListener("input", () => {
+    const event = new Event("music-search");
+    document.dispatchEvent(event);
+  });
+}
+</script>
 
 </body>
 </html>
